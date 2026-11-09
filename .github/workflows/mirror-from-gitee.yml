@@ -13,10 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 从 Gitee 镜像克隆并推到 GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           set -e
           git clone --mirror https://gitee.com/peach_moon/chem_project.git repo.git
           cd repo.git
-          git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git \
+          git push --force https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git \
             "refs/heads/*:refs/heads/*" \
             "refs/tags/*:refs/tags/*"
