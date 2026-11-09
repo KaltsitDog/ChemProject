@@ -1,9 +1,10 @@
 #全项目唯一的路径出口：代码里不再写绝对路径，换机器/换目录只改这一个文件（或设环境变量）
 #用法：notebook 里先 sys.path 加上仓库根，再 import config
+#仓库根 = 本文件（config.py）所在目录
+
 from pathlib import Path
 import os
 
-#仓库根 = 本文件（config.py）所在目录
 ROOT = Path(__file__).resolve().parent
 
 #仓库自带的数据：下载仓库就有
@@ -21,9 +22,9 @@ def ext(env_name, default):
 
 #3D 几何（parent_XXXX/conf.xyz 的那 1426 个文件夹）与 xTB 程序都不入库
 #换机器就设 CHEM_PARENTS / CHEM_XTB / CHEM_XTB_WORK 三个环境变量
-PARENTS = ext("CHEM_PARENTS", Path.home() / "Desktop" / "Parents")
 XTB = ext("CHEM_XTB", Path.home() / "miniconda3" / "envs" / "xtb" / "Library" / "bin" / "xtb.exe")
 XTB_WORK = ext("CHEM_XTB_WORK", ROOT.parent / "xtb_work")
+PARENTS = ext("CHEM_PARENTS", XTB_WORK / "Parents")
 
 if __name__ == "__main__":
     #命令行跑一下 python config.py，看这台机器上各路径通不通
