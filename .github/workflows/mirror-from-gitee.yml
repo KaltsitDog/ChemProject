@@ -1,0 +1,22 @@
+name: 镜像同步 Gitee to GitHub
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 从 Gitee 镜像克隆并推到 GitHub
+        run: |
+          set -e
+          git clone --mirror https://gitee.com/peach_moon/chem_project.git repo.git
+          cd repo.git
+          git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git \
+            "refs/heads/*:refs/heads/*" \
+            "refs/tags/*:refs/tags/*"
