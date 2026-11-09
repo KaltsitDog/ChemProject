@@ -1,6 +1,7 @@
-# Chem Project —— 含能材料 QSAR（爆热 DH / 热分解温度 TDT）
+# 含能材料 QSAR（爆热 DH / 热分解温度 TDT）
 
 > 主仓库（Gitee）：<https://gitee.com/peach_moon/chem_project>
+
 > GitHub 镜像：<https://github.com/KaltsitDog/ChemProject>
 
 含能材料（炸药 / 高能化合物）的 QSAR 回归项目：用分子结构（SMILES）预测爆热 Q 和热分解温度 Td。特征由 RDKit / Mordred 的 2D 描述符与 xTB 半经验量化算出的 WBO、BDE 拼接而成。
