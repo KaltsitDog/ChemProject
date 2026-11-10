@@ -57,7 +57,7 @@ python config.py
 
 从零重算几何 / BDE 另需 xTB，设 `CHEM_XTB`。
 
-若不想重算特征，可使用 TDT 特征缓存（`features_1426.npz`，8.3 MB）：[Gitee Releases](https://gitee.com/peach_moon/chem_project/releases/tag/data-v1) / [GitHub Releases](https://github.com/KaltsitDog/ChemProject/releases/tag/data-v1)。meta 里的绝对路径已清掉，`test.ipynb` 不用先跑 `Features_Producer`。
+若不想重算特征，可使用 TDT 特征缓存（`features_1426.npz`，8.3 MB）：[Gitee Releases](https://gitee.com/peach_moon/chem_project/releases/tag/data-v1) / [GitHub Releases](https://github.com/KaltsitDog/ChemProject/releases/tag/data-v1)。meta 里的绝对路径已清掉，下载后放 TDT/out/，`test.ipynb` 不用先跑 `Features_Producer`。
 
 `DH/notebook` 的 5 本要在 `DH/notebook` 目录下打开（它们用 `Path.cwd().parent`），其余 notebook 从仓库根打开即可。
 
