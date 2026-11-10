@@ -12,7 +12,7 @@ openpyxl>=3.1
 #2) 跑建模（DH/notebook、TDT/notebook/modeling）—— 再加这几个
 #   注意：代码里 import mordred 装的是 mordredcommunity；import skfp 装的是 scikit-fingerprints
 mordredcommunity>=2.0.6
-scikit-fingerprints>=1.0
+scikit-fingerprints>=1.8.0
 #   scikit-fingerprints 2.x 的 model_selection 内部 import requests，但它没把 requests 写进依赖，得自己补
 requests>=2.31
 xgboost>=2.0

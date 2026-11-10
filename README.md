@@ -19,12 +19,11 @@
 
 | 模块 | 口径 | R² | MAE |
 | --- | --- | ---: | ---: |
-| DH | 随机 10 折 CV | **0.791 ± 0.059** | 132.9 |
+| DH | 随机 10 折 CV | **0.777 ± 0.130** | 133.7 |
 | DH | Murcko 骨架 8 : 2 留出（70 / 18） | 0.787 | 190.6 |
 | TDT | 随机 10 折（3 个种子平均，bag3） | **0.7073** | 26.81 |
 | TDT | 骨架 8 : 2 × 5 种子 | 0.6559 ± 0.0268 | 30.34 |
 | TDT | 骨架分组 10 折 | 0.6104 ± 0.1376 | 29.48 |
-
 ## 目录
 
 ```
@@ -58,7 +57,11 @@ python config.py
 
 从零重算几何 / BDE 另需 xTB，设 `CHEM_XTB`。
 
+若不想重算特征，可使用 TDT 特征缓存（`features_1426.npz`，8.3 MB）：[Gitee Releases](https://gitee.com/peach_moon/chem_project/releases/tag/data-v1) / [GitHub Releases](https://github.com/KaltsitDog/ChemProject/releases/tag/data-v1)。meta 里的绝对路径已清掉，`test.ipynb` 不用先跑 `Features_Producer`。
+
 `DH/notebook` 的 5 本要在 `DH/notebook` 目录下打开（它们用 `Path.cwd().parent`），其余 notebook 从仓库根打开即可。
+
+更细的复现检查点、排错和版本表见 [`docs/reproduction.md`](docs/reproduction.md)。
 
 ## 数据说明
 
