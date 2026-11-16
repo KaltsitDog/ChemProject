@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: mirror-from-gitee
+  cancel-in-progress: true
+
 jobs:
   mirror:
     runs-on: ubuntu-latest
@@ -15,10 +19,51 @@ jobs:
       - name: 从 Gitee 镜像克隆并推到 GitHub
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          SRC_REPO: https://gitee.com/peach_moon/chem_project.git
         run: |
-          set -e
-          git clone --mirror https://gitee.com/peach_moon/chem_project.git repo.git
-          cd repo.git
-          git push --force https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git \
-            "refs/heads/*:refs/heads/*" \
-            "refs/tags/*:refs/tags/*"
+          set -eo pipefail
+
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::secrets.GH_TOKEN 没有配置，无法推送到 GitHub"
+            exit 1
+          fi
+
+          export GIT_TERMINAL_PROMPT=0
+
+          #克隆：Gitee 偶发抖动时会卡住或失败，最多试 3 次，每次限时 150 秒
+          cloned=0
+          for i in 1 2 3; do
+            echo "== clone 第 ${i} 次 $(date -u '+%H:%M:%S') =="
+            rm -rf repo.git
+            if timeout 150 git clone --mirror "${SRC_REPO}" repo.git; then
+              cloned=1
+              break
+            fi
+            echo "::warning::clone 第 ${i} 次失败，10 秒后重试"
+            sleep 10
+          done
+          if [ "${cloned}" -ne 1 ]; then
+            echo "::error::从 Gitee 克隆连续 3 次失败，先确认 gitee 仓库可以匿名访问"
+            exit 1
+          fi
+
+          #推送：网络抖动时同样重试
+          pushed=0
+          for i in 1 2 3; do
+            echo "== push 第 ${i} 次 $(date -u '+%H:%M:%S') =="
+            if timeout 150 git -C repo.git push --force \
+              "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" \
+              "refs/heads/*:refs/heads/*" \
+              "refs/tags/*:refs/tags/*"; then
+              pushed=1
+              break
+            fi
+            echo "::warning::push 第 ${i} 次失败，10 秒后重试"
+            sleep 10
+          done
+          if [ "${pushed}" -ne 1 ]; then
+            echo "::error::推送到 GitHub 连续 3 次失败，检查 GH_TOKEN 是否过期或没有 repo 写权限"
+            exit 1
+          fi
+
+          echo "== 同步完成 $(date -u '+%Y-%m-%d %H:%M:%S') UTC =="
